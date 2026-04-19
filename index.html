@@ -13,6 +13,8 @@
       --safe-left: env(safe-area-inset-left, 0px);
       --page-bg: #e8e1d9;
       --btn-border: #bf8a52;
+      --app-height: 100vh;
+      --stage-ratio: 2.02524;
     }
 
     * {
@@ -22,48 +24,49 @@
     }
 
     html {
-      height: 100%;
+      min-height: 100%;
       background: var(--page-bg);
     }
 
     body {
-      height: 100%;
+      min-height: 100%;
       background: var(--page-bg);
       font-family: "Tahoma", "Arial", sans-serif;
       -webkit-text-size-adjust: 100%;
       text-size-adjust: 100%;
-      overflow: hidden;
+      overflow-x: hidden;
+      overflow-y: auto;
     }
 
     .page {
       width: 100%;
-      height: 100svh;
-      height: 100dvh;
+      min-height: calc(var(--app-height) + 26px);
+      background: var(--page-bg);
       padding:
-        calc(var(--safe-top) + 4px)
+        calc(var(--safe-top) + 6px)
         max(4px, var(--safe-right))
-        calc(var(--safe-bottom) + 4px)
+        calc(var(--safe-bottom) + 14px)
         max(4px, var(--safe-left));
       display: flex;
       align-items: center;
       justify-content: center;
-      background: var(--page-bg);
     }
 
     .safe-stage {
       position: relative;
-      width: fit-content;
-      max-width: calc(100vw - var(--safe-left) - var(--safe-right) - 8px);
+      width: min(
+        calc(100vw - var(--safe-left) - var(--safe-right) - 8px),
+        calc((var(--app-height) - var(--safe-top) - var(--safe-bottom) - 22px) * var(--stage-ratio))
+      );
+      max-width: 1800px;
       margin: 0 auto;
       flex-shrink: 0;
     }
 
     .stage-image {
       display: block;
-      width: auto;
+      width: 100%;
       height: auto;
-      max-width: calc(100vw - var(--safe-left) - var(--safe-right) - 8px);
-      max-height: calc(100dvh - var(--safe-top) - var(--safe-bottom) - 8px);
       user-select: none;
       -webkit-user-drag: none;
       pointer-events: none;
@@ -121,6 +124,22 @@
     }
 
     @media (max-width: 900px) {
+      .page {
+        min-height: calc(var(--app-height) + 22px);
+        padding:
+          calc(var(--safe-top) + 5px)
+          max(3px, var(--safe-right))
+          calc(var(--safe-bottom) + 12px)
+          max(3px, var(--safe-left));
+      }
+
+      .safe-stage {
+        width: min(
+          calc(100vw - var(--safe-left) - var(--safe-right) - 6px),
+          calc((var(--app-height) - var(--safe-top) - var(--safe-bottom) - 18px) * var(--stage-ratio))
+        );
+      }
+
       .title {
         width: 84%;
         font-size: clamp(24px, 5.2vw, 58px);
@@ -129,16 +148,19 @@
 
     @media (max-width: 600px) {
       .page {
+        min-height: calc(var(--app-height) + 18px);
         padding:
-          calc(var(--safe-top) + 2px)
+          calc(var(--safe-top) + 3px)
           max(2px, var(--safe-right))
-          calc(var(--safe-bottom) + 2px)
+          calc(var(--safe-bottom) + 10px)
           max(2px, var(--safe-left));
       }
 
-      .stage-image {
-        max-width: calc(100vw - var(--safe-left) - var(--safe-right) - 4px);
-        max-height: calc(100dvh - var(--safe-top) - var(--safe-bottom) - 4px);
+      .safe-stage {
+        width: min(
+          calc(100vw - var(--safe-left) - var(--safe-right) - 4px),
+          calc((var(--app-height) - var(--safe-top) - var(--safe-bottom) - 14px) * var(--stage-ratio))
+        );
       }
 
       .title {
@@ -176,5 +198,31 @@
       <a class="start-btn" href="page2.html">إبدأ</a>
     </section>
   </main>
+
+  <script>
+    (function () {
+      const root = document.documentElement;
+
+      function setAppHeight() {
+        const h = window.visualViewport && window.visualViewport.height
+          ? window.visualViewport.height
+          : window.innerHeight;
+        root.style.setProperty('--app-height', h + 'px');
+      }
+
+      setAppHeight();
+
+      window.addEventListener('resize', setAppHeight, { passive: true });
+      window.addEventListener('orientationchange', () => {
+        setTimeout(setAppHeight, 80);
+        setTimeout(setAppHeight, 250);
+      }, { passive: true });
+
+      if (window.visualViewport) {
+        window.visualViewport.addEventListener('resize', setAppHeight, { passive: true });
+        window.visualViewport.addEventListener('scroll', setAppHeight, { passive: true });
+      }
+    })();
+  </script>
 </body>
 </html>
