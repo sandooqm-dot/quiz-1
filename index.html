@@ -12,7 +12,7 @@
       --safe-bottom: env(safe-area-inset-bottom, 0px);
       --safe-left: env(safe-area-inset-left, 0px);
       --page-bg: #BC9A71;
-      --btn-border: #bf8a52;
+      --brown: #7B5C39;
       --app-height: 100vh;
       --stage-ratio: 2.02524;
     }
@@ -72,7 +72,16 @@
       pointer-events: none;
     }
 
-    .title {
+    .screen {
+      position: absolute;
+      inset: 0;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    .intro-title {
       position: absolute;
       left: 50%;
       top: 51%;
@@ -93,7 +102,7 @@
       transform: translate(-50%, -50%);
       min-width: clamp(120px, 12vw, 210px);
       padding: clamp(10px, 1vw, 18px) clamp(34px, 4vw, 64px);
-      border: clamp(3px, 0.35vw, 7px) solid var(--btn-border);
+      border: clamp(3px, 0.35vw, 7px) solid var(--brown);
       border-radius: 999px;
       background: rgba(255, 255, 255, 0.14);
       color: #000;
@@ -109,6 +118,7 @@
       -webkit-backdrop-filter: blur(1px);
       -webkit-tap-highlight-color: transparent;
       transition: transform 0.18s ease, background 0.18s ease, box-shadow 0.18s ease;
+      cursor: pointer;
     }
 
     .start-btn:hover,
@@ -121,6 +131,110 @@
 
     .start-btn:active {
       transform: translate(-50%, -50%) scale(0.98);
+    }
+
+    .question-text {
+      position: absolute;
+      left: 50%;
+      top: 24.8%;
+      transform: translate(-50%, -50%);
+      width: 90%;
+      color: #000;
+      text-align: center;
+      font-size: clamp(28px, 4.2vw, 78px);
+      font-weight: 700;
+      line-height: 1.45;
+      white-space: normal;
+    }
+
+    .choices-row {
+      position: absolute;
+      left: 50%;
+      top: 47.8%;
+      transform: translate(-50%, -50%);
+      width: 86%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: clamp(12px, 2vw, 34px);
+      direction: rtl;
+    }
+
+    .choice-btn {
+      flex: 1 1 0;
+      min-height: clamp(64px, 8vw, 124px);
+      border: clamp(3px, 0.35vw, 7px) solid var(--brown);
+      border-radius: clamp(18px, 2vw, 36px);
+      background: rgba(236, 230, 223, 0.92);
+      color: #000;
+      font-size: clamp(24px, 3vw, 54px);
+      font-weight: 700;
+      line-height: 1.15;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 10px 12px;
+      cursor: pointer;
+      transition: transform 0.15s ease, background 0.15s ease, box-shadow 0.15s ease;
+    }
+
+    .choice-btn:hover,
+    .choice-btn:focus-visible {
+      transform: translateY(-2px);
+      background: rgba(245, 239, 232, 0.98);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+      outline: none;
+    }
+
+    .choice-btn:active {
+      transform: scale(0.98);
+    }
+
+    .choice-btn.selected {
+      background: rgba(123, 92, 57, 0.16);
+    }
+
+    .nav-row {
+      position: absolute;
+      left: 50%;
+      bottom: 1.7%;
+      transform: translateX(-50%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: clamp(12px, 1.5vw, 26px);
+      direction: rtl;
+    }
+
+    .nav-btn {
+      min-width: clamp(126px, 14vw, 220px);
+      min-height: clamp(48px, 4.5vw, 82px);
+      border: none;
+      border-radius: 999px;
+      background: var(--brown);
+      color: #fff;
+      font-size: clamp(24px, 2.5vw, 48px);
+      font-weight: 700;
+      line-height: 1;
+      padding: 10px 30px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: transform 0.15s ease, filter 0.15s ease;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .nav-btn:hover,
+    .nav-btn:focus-visible {
+      transform: translateY(-1px);
+      filter: brightness(1.04);
+      outline: none;
+    }
+
+    .nav-btn:active {
+      transform: scale(0.98);
     }
 
     @media (max-width: 900px) {
@@ -140,9 +254,24 @@
         );
       }
 
-      .title {
+      .intro-title {
         width: 84%;
         font-size: clamp(24px, 5.2vw, 58px);
+      }
+
+      .question-text {
+        width: 91%;
+        top: 25%;
+        font-size: clamp(24px, 4.8vw, 58px);
+      }
+
+      .choices-row {
+        width: 87%;
+        top: 47.8%;
+      }
+
+      .choice-btn {
+        font-size: clamp(21px, 3vw, 42px);
       }
     }
 
@@ -163,7 +292,7 @@
         );
       }
 
-      .title {
+      .intro-title {
         width: 88%;
         top: 51%;
         font-size: clamp(22px, 6.2vw, 42px);
@@ -176,16 +305,60 @@
         font-size: clamp(22px, 5vw, 34px);
         padding: 11px 34px;
       }
+
+      .question-text {
+        width: 92%;
+        top: 24.7%;
+        font-size: clamp(20px, 5.3vw, 34px);
+        line-height: 1.5;
+      }
+
+      .choices-row {
+        width: 86%;
+        top: 47.6%;
+        gap: 10px;
+      }
+
+      .choice-btn {
+        min-height: clamp(52px, 10vw, 82px);
+        font-size: clamp(18px, 4.3vw, 28px);
+        border-radius: 18px;
+      }
+
+      .nav-row {
+        bottom: 1.2%;
+        gap: 10px;
+      }
+
+      .nav-btn {
+        min-width: clamp(108px, 23vw, 160px);
+        min-height: clamp(42px, 8vw, 60px);
+        font-size: clamp(18px, 4.4vw, 28px);
+        padding: 8px 22px;
+      }
     }
 
     @media (max-width: 380px) {
-      .title {
+      .intro-title {
         width: 90%;
         font-size: clamp(20px, 6.6vw, 34px);
       }
 
       .start-btn {
         padding: 10px 30px;
+      }
+
+      .question-text {
+        font-size: clamp(18px, 5.6vw, 28px);
+      }
+
+      .choice-btn {
+        font-size: clamp(16px, 4.6vw, 24px);
+      }
+
+      .nav-btn {
+        min-width: 96px;
+        padding: 8px 18px;
       }
     }
   </style>
@@ -194,8 +367,22 @@
   <main class="page">
     <section class="safe-stage">
       <img class="stage-image" src="sora1.PNG" alt="" />
-      <h1 class="title">تغذية راجعة لمادة الفقة</h1>
-      <a class="start-btn" href="page2.html">إبدأ</a>
+
+      <section id="introScreen" class="screen">
+        <h1 class="intro-title">تغذية راجعة لمادة الفقة</h1>
+        <button id="startBtn" class="start-btn" type="button">إبدأ</button>
+      </section>
+
+      <section id="quizScreen" class="screen hidden">
+        <h2 id="questionText" class="question-text"></h2>
+
+        <div id="choicesRow" class="choices-row"></div>
+
+        <div class="nav-row">
+          <button id="nextBtn" class="nav-btn" type="button">التالي</button>
+          <button id="prevBtn" class="nav-btn" type="button">السابق</button>
+        </div>
+      </section>
     </section>
   </main>
 
@@ -222,6 +409,90 @@
         window.visualViewport.addEventListener('resize', setAppHeight, { passive: true });
         window.visualViewport.addEventListener('scroll', setAppHeight, { passive: true });
       }
+
+      const questions = [
+        {
+          question: 'الصيام هو الركن ...... من أركان الإسلام',
+          choices: ['الثاني', 'الثالث', 'الرابع']
+        },
+        {
+          question: 'ليلة القدر تكون في العشر ..... من رمضان',
+          choices: ['الأوائل', 'الأواسط', 'الأواخر']
+        },
+        {
+          question: 'الزكاة هي الركن .....',
+          choices: ['الأول', 'الثاني', 'الثالث']
+        }
+      ];
+
+      const selectedChoices = new Array(questions.length).fill(null);
+
+      const introScreen = document.getElementById('introScreen');
+      const quizScreen = document.getElementById('quizScreen');
+      const startBtn = document.getElementById('startBtn');
+      const prevBtn = document.getElementById('prevBtn');
+      const nextBtn = document.getElementById('nextBtn');
+      const questionText = document.getElementById('questionText');
+      const choicesRow = document.getElementById('choicesRow');
+
+      let currentQuestionIndex = 0;
+
+      function showIntro() {
+        introScreen.classList.remove('hidden');
+        quizScreen.classList.add('hidden');
+      }
+
+      function showQuiz() {
+        introScreen.classList.add('hidden');
+        quizScreen.classList.remove('hidden');
+        renderQuestion();
+      }
+
+      function renderQuestion() {
+        const current = questions[currentQuestionIndex];
+        questionText.textContent = current.question;
+        choicesRow.innerHTML = '';
+
+        current.choices.forEach((choice, choiceIndex) => {
+          const btn = document.createElement('button');
+          btn.type = 'button';
+          btn.className = 'choice-btn';
+          btn.textContent = choice;
+
+          if (selectedChoices[currentQuestionIndex] === choiceIndex) {
+            btn.classList.add('selected');
+          }
+
+          btn.addEventListener('click', () => {
+            selectedChoices[currentQuestionIndex] = choiceIndex;
+            renderQuestion();
+          });
+
+          choicesRow.appendChild(btn);
+        });
+      }
+
+      startBtn.addEventListener('click', () => {
+        currentQuestionIndex = 0;
+        showQuiz();
+      });
+
+      prevBtn.addEventListener('click', () => {
+        if (currentQuestionIndex === 0) {
+          showIntro();
+          return;
+        }
+
+        currentQuestionIndex -= 1;
+        renderQuestion();
+      });
+
+      nextBtn.addEventListener('click', () => {
+        if (currentQuestionIndex < questions.length - 1) {
+          currentQuestionIndex += 1;
+          renderQuestion();
+        }
+      });
     })();
   </script>
 </body>
