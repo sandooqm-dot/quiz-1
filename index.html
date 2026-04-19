@@ -2,10 +2,7 @@
 <html lang="ar" dir="rtl">
 <head>
   <meta charset="UTF-8" />
-  <meta
-    name="viewport"
-    content="width=device-width, initial-scale=1.0, viewport-fit=cover"
-  />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
   <title>تغذية راجعة لمادة الفقة</title>
 
   <style>
@@ -15,6 +12,7 @@
       --safe-bottom: env(safe-area-inset-bottom, 0px);
       --safe-left: env(safe-area-inset-left, 0px);
       --page-bg: #e8e1d9;
+      --btn-border: #bf8a52;
     }
 
     * {
@@ -24,13 +22,14 @@
     }
 
     html {
-      min-height: 100%;
       background: var(--page-bg);
+      min-height: 100%;
     }
 
     body {
-      min-height: 100%;
       background: var(--page-bg);
+      min-height: 100svh;
+      min-height: 100dvh;
       font-family: "Tahoma", "Arial", sans-serif;
       -webkit-text-size-adjust: 100%;
       text-size-adjust: 100%;
@@ -39,51 +38,57 @@
     }
 
     .page {
-      width: 100%;
-      min-height: calc(100svh + 40px);
-      min-height: calc(100dvh + 40px);
-      background: var(--page-bg);
-      padding-top: calc(var(--safe-top) + 10px);
-      padding-right: max(8px, var(--safe-right));
-      padding-bottom: calc(var(--safe-bottom) + 10px);
-      padding-left: max(8px, var(--safe-left));
+      min-height: 100svh;
+      min-height: 100dvh;
+      padding:
+        calc(var(--safe-top) + 8px)
+        max(6px, var(--safe-right))
+        calc(var(--safe-bottom) + 16px)
+        max(6px, var(--safe-left));
       display: flex;
       align-items: center;
       justify-content: center;
+      background: var(--page-bg);
     }
 
     .safe-stage {
       position: relative;
-      width: calc(100vw - var(--safe-left) - var(--safe-right) - 24px);
-      max-width: 1880px;
-      aspect-ratio: 16 / 9;
-      background: url("sora1.PNG") center center / cover no-repeat;
-      overflow: hidden;
+      width: min(calc(100vw - var(--safe-left) - var(--safe-right) - 12px), 1700px);
+      margin: 0 auto;
       flex-shrink: 0;
+    }
+
+    .stage-image {
+      display: block;
+      width: 100%;
+      height: auto;
+      user-select: none;
+      -webkit-user-drag: none;
+      pointer-events: none;
     }
 
     .title {
       position: absolute;
       left: 50%;
-      top: 46%;
+      top: 51%;
       transform: translate(-50%, -50%);
       width: 78%;
       color: #000;
       text-align: center;
-      font-size: clamp(28px, 4.2vw, 82px);
+      font-size: clamp(26px, 4.2vw, 82px);
       font-weight: 700;
       line-height: 1.35;
-      word-break: keep-all;
+      white-space: normal;
     }
 
     .start-btn {
       position: absolute;
       left: 50%;
-      top: 73%;
+      top: 78%;
       transform: translate(-50%, -50%);
       min-width: clamp(120px, 12vw, 210px);
       padding: clamp(10px, 1vw, 18px) clamp(34px, 4vw, 64px);
-      border: clamp(3px, 0.35vw, 7px) solid #bf8a52;
+      border: clamp(3px, 0.35vw, 7px) solid var(--btn-border);
       border-radius: 999px;
       background: rgba(255, 255, 255, 0.14);
       color: #000;
@@ -115,63 +120,63 @@
 
     @media (max-width: 900px) {
       .page {
-        min-height: calc(100svh + 36px);
-        min-height: calc(100dvh + 36px);
-        padding-top: calc(var(--safe-top) + 8px);
-        padding-bottom: calc(var(--safe-bottom) + 8px);
+        padding:
+          calc(var(--safe-top) + 6px)
+          max(4px, var(--safe-right))
+          calc(var(--safe-bottom) + 12px)
+          max(4px, var(--safe-left));
       }
 
       .safe-stage {
-        width: calc(100vw - var(--safe-left) - var(--safe-right) - 18px);
+        width: min(calc(100vw - var(--safe-left) - var(--safe-right) - 8px), 1700px);
       }
 
       .title {
         width: 84%;
-        font-size: clamp(24px, 5vw, 58px);
+        font-size: clamp(24px, 5.2vw, 58px);
+      }
+
+      .start-btn {
+        top: 78%;
       }
     }
 
     @media (max-width: 600px) {
       .page {
-        min-height: calc(100svh + 32px);
-        min-height: calc(100dvh + 32px);
-        padding-top: calc(var(--safe-top) + 6px);
-        padding-right: max(6px, var(--safe-right));
-        padding-bottom: calc(var(--safe-bottom) + 6px);
-        padding-left: max(6px, var(--safe-left));
+        align-items: flex-start;
+        padding:
+          calc(var(--safe-top) + 4px)
+          max(2px, var(--safe-right))
+          calc(var(--safe-bottom) + 10px)
+          max(2px, var(--safe-left));
       }
 
       .safe-stage {
-        width: calc(100vw - var(--safe-left) - var(--safe-right) - 14px);
+        width: calc(100vw - var(--safe-left) - var(--safe-right) - 4px);
       }
 
       .title {
         width: 88%;
-        top: 45%;
+        top: 51%;
         font-size: clamp(22px, 6.2vw, 42px);
-        line-height: 1.45;
+        line-height: 1.4;
       }
 
       .start-btn {
-        top: 72%;
-        min-width: 120px;
+        top: 78%;
+        min-width: 118px;
         font-size: clamp(22px, 5vw, 34px);
         padding: 11px 34px;
       }
     }
 
     @media (max-width: 380px) {
-      .safe-stage {
-        width: calc(100vw - var(--safe-left) - var(--safe-right) - 12px);
-      }
-
       .title {
         width: 90%;
-        font-size: clamp(20px, 6.7vw, 34px);
+        font-size: clamp(20px, 6.6vw, 34px);
       }
 
       .start-btn {
-        top: 71.5%;
         padding: 10px 30px;
       }
     }
@@ -180,6 +185,7 @@
 <body>
   <main class="page">
     <section class="safe-stage">
+      <img class="stage-image" src="sora1.PNG" alt="" />
       <h1 class="title">تغذية راجعة لمادة الفقة</h1>
       <a class="start-btn" href="page2.html">إبدأ</a>
     </section>
