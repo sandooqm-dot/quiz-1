@@ -159,23 +159,24 @@
       top: 55.2%;
       transform: translate(-50%, -50%);
       width: 62%;
-      max-width: 940px;
+      max-width: 980px;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      gap: clamp(10px, 1.5vw, 24px);
+      gap: clamp(10px, 1.5vw, 22px);
       direction: rtl;
     }
 
     .choices-row.compact-row {
-      width: 60%;
-      max-width: 880px;
+      width: 62%;
+      max-width: 980px;
       top: 56.1%;
-      gap: clamp(8px, 1.2vw, 18px);
+      gap: clamp(10px, 1.5vw, 22px);
     }
 
     .choice-btn {
-      flex: 1 1 0;
+      flex: 0 0 24.5%;
+      min-width: 0;
       min-height: clamp(54px, 6.6vw, 100px);
       border: clamp(3px, 0.35vw, 7px) solid var(--brown);
       border-radius: clamp(16px, 1.6vw, 28px);
@@ -194,6 +195,7 @@
     }
 
     .choices-row.compact-row .choice-btn {
+      flex-basis: 24.5%;
       min-height: clamp(50px, 6vw, 90px);
       font-size: clamp(20px, 2.15vw, 38px);
       border-radius: clamp(14px, 1.4vw, 24px);
@@ -292,22 +294,24 @@
       }
 
       .choices-row {
-        width: 66%;
-        max-width: 840px;
+        width: 62%;
+        max-width: 780px;
         top: 55%;
       }
 
       .choices-row.compact-row {
-        width: 63%;
+        width: 62%;
         max-width: 780px;
         top: 56%;
       }
 
       .choice-btn {
+        flex-basis: 24%;
         font-size: clamp(19px, 2.5vw, 34px);
       }
 
       .choices-row.compact-row .choice-btn {
+        flex-basis: 24%;
         font-size: clamp(17px, 2.2vw, 28px);
       }
     }
@@ -358,20 +362,21 @@
       }
 
       .choices-row {
-        width: 72%;
+        width: 76%;
         max-width: none;
         top: 55.1%;
         gap: 8px;
       }
 
       .choices-row.compact-row {
-        width: 69%;
+        width: 76%;
         max-width: none;
         top: 56.2%;
-        gap: 7px;
+        gap: 8px;
       }
 
       .choice-btn {
+        flex-basis: 28.5%;
         min-height: clamp(46px, 8.2vw, 68px);
         font-size: clamp(16px, 3.8vw, 24px);
         border-radius: 16px;
@@ -379,6 +384,7 @@
       }
 
       .choices-row.compact-row .choice-btn {
+        flex-basis: 28.5%;
         min-height: clamp(42px, 7.2vw, 60px);
         font-size: clamp(14px, 3.3vw, 20px);
         border-radius: 14px;
