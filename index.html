@@ -256,6 +256,16 @@
       font-weight: 700;
       line-height: 1.45;
       white-space: normal;
+      cursor: pointer;
+      overflow: hidden;
+      transition: transform 0.18s ease, box-shadow 0.18s ease, background 0.18s ease;
+    }
+
+    .answer-box:hover,
+    .answer-box:focus-visible {
+      transform: translate(-50%, -50%) translateY(-1px);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+      outline: none;
     }
 
     .answer-box.long-answer {
@@ -269,6 +279,41 @@
     .answer-box.multi-line-answer {
       min-height: 150px;
       line-height: 1.55;
+    }
+
+    .answer-box.revealed {
+      background: rgba(245, 239, 232, 0.98);
+    }
+
+    .answer-box-content {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      opacity: 0;
+      transform: translateY(12px) scale(0.98);
+    }
+
+    .answer-box.revealed .answer-box-content {
+      animation: revealAnswer 0.38s ease forwards;
+    }
+
+    .answer-line {
+      width: 100%;
+      text-align: center;
+    }
+
+    @keyframes revealAnswer {
+      from {
+        opacity: 0;
+        transform: translateY(12px) scale(0.98);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
     }
 
     .nav-row {
@@ -581,7 +626,7 @@
       <section id="quizScreen" class="screen hidden">
         <h2 id="questionText" class="question-text"></h2>
         <div id="choicesRow" class="choices-row"></div>
-        <div id="answerBox" class="answer-box hidden"></div>
+        <div id="answerBox" class="answer-box hidden" role="button" tabindex="0" aria-label="إظهار الإجابة"></div>
 
         <div class="nav-row">
           <button id="nextBtn" class="nav-btn" type="button">التالي</button>
@@ -662,36 +707,37 @@
         {
           type: 'direct',
           question: 'الذين يباح لهم الفطر في رمضان',
-          answer: 'المريض والمسافر'
+          answerLines: ['المريض', 'المسافر']
         },
         {
           type: 'direct',
           question: 'ما الركن الخامس من أركان الإسلام؟',
-          answer: 'الحج'
+          answerLines: ['الحج']
         },
         {
           type: 'direct',
           question: 'عرّفي الإحرام.',
-          answer: 'نية الدخول في النسك'
+          answerLines: ['نية الدخول في النسك']
         },
         {
           type: 'direct',
           question: 'اذكري اثنين من الأموال التي تجب فيها الزكاة.',
-          answer: 'بهيمة الأنعام<br>الذهب والفضة والأوراق النقدية'
+          answerLines: ['بهيمة الأنعام', 'الذهب والفضة', 'الأوراق النقدية']
         },
         {
           type: 'direct',
           question: 'ما مقدار زكاة الفطر؟',
-          answer: 'صاع'
+          answerLines: ['صاع']
         },
         {
           type: 'direct',
           question: 'مثّلي لأعمال يستمر أجرها بعد موت الإنسان.',
-          answer: 'الصدقة الجارية<br>العلم النافع<br>الولد الصالح'
+          answerLines: ['الصدقة الجارية', 'العلم النافع', 'الولد الصالح']
         }
       ];
 
       const selectedChoices = new Array(questions.length).fill(null);
+      const revealedDirectAnswers = new Array(questions.length).fill(false);
 
       const introScreen = document.getElementById('introScreen');
       const quizScreen = document.getElementById('quizScreen');
@@ -729,19 +775,36 @@
         choicesRow.classList.toggle('two-choice-row', current.type === 'tf');
       }
 
-      function applyAnswerSizing(answerHtml) {
-        const plain = answerHtml.replace(/<br\s*\/?>/gi, ' ').replace(/\s+/g, ' ').trim();
-        const breakCount = (answerHtml.match(/<br\s*\/?>/gi) || []).length;
+      function applyAnswerSizing(lines) {
+        const totalText = lines.join(' ');
+        const isLongAnswer = totalText.length >= 26 || lines.length >= 2;
+        const isMultiLineAnswer = lines.length >= 2;
 
-        answerBox.classList.remove('long-answer', 'multi-line-answer');
+        answerBox.classList.toggle('long-answer', isLongAnswer);
+        answerBox.classList.toggle('multi-line-answer', isMultiLineAnswer);
+      }
 
-        if (plain.length >= 28 || breakCount >= 1) {
-          answerBox.classList.add('long-answer');
+      function renderAnswerBox(lines, isRevealed) {
+        answerBox.classList.remove('hidden');
+        applyAnswerSizing(lines);
+        answerBox.classList.toggle('revealed', isRevealed);
+
+        if (!isRevealed) {
+          answerBox.innerHTML = '';
+          return;
         }
 
-        if (breakCount >= 2) {
-          answerBox.classList.add('multi-line-answer');
-        }
+        answerBox.innerHTML = `
+          <div class="answer-box-content">
+            ${lines.map(line => `<div class="answer-line">${line}</div>`).join('')}
+          </div>
+        `;
+      }
+
+      function clearAnswerBox() {
+        answerBox.classList.add('hidden');
+        answerBox.classList.remove('revealed', 'long-answer', 'multi-line-answer');
+        answerBox.innerHTML = '';
       }
 
       function renderQuestion() {
@@ -752,15 +815,11 @@
         if (current.type === 'direct') {
           choicesRow.innerHTML = '';
           choicesRow.classList.add('hidden');
-          answerBox.classList.remove('hidden');
-          answerBox.innerHTML = current.answer;
-          applyAnswerSizing(current.answer);
+          renderAnswerBox(current.answerLines || [], revealedDirectAnswers[currentQuestionIndex]);
           return;
         }
 
-        answerBox.classList.add('hidden');
-        answerBox.innerHTML = '';
-        answerBox.classList.remove('long-answer', 'multi-line-answer');
+        clearAnswerBox();
         choicesRow.classList.remove('hidden');
         choicesRow.innerHTML = '';
 
@@ -783,6 +842,15 @@
         });
       }
 
+      function revealDirectAnswer() {
+        const current = questions[currentQuestionIndex];
+        if (!current || current.type !== 'direct') return;
+        if (revealedDirectAnswers[currentQuestionIndex]) return;
+
+        revealedDirectAnswers[currentQuestionIndex] = true;
+        renderQuestion();
+      }
+
       startBtn.addEventListener('click', () => {
         currentQuestionIndex = 0;
         showQuiz();
@@ -802,6 +870,14 @@
         if (currentQuestionIndex < questions.length - 1) {
           currentQuestionIndex += 1;
           renderQuestion();
+        }
+      });
+
+      answerBox.addEventListener('click', revealDirectAnswer);
+      answerBox.addEventListener('keydown', (event) => {
+        if (event.key === 'Enter' || event.key === ' ') {
+          event.preventDefault();
+          revealDirectAnswer();
         }
       });
     })();
