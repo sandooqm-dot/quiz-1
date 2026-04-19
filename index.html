@@ -40,13 +40,13 @@
 
     .page {
       width: 100%;
-      min-height: calc(100svh + 120px);
-      min-height: calc(100dvh + 120px);
+      min-height: calc(100svh + 36px);
+      min-height: calc(100dvh + 36px);
       background: var(--page-bg);
-      padding-top: calc(var(--safe-top) + 26px);
-      padding-right: max(6px, var(--safe-right));
-      padding-bottom: calc(var(--safe-bottom) + 26px);
-      padding-left: max(6px, var(--safe-left));
+      padding-top: calc(var(--safe-top) + 8px);
+      padding-right: max(2px, var(--safe-right));
+      padding-bottom: calc(var(--safe-bottom) + 8px);
+      padding-left: max(2px, var(--safe-left));
       display: flex;
       align-items: center;
       justify-content: center;
@@ -54,10 +54,8 @@
 
     .safe-stage {
       position: relative;
-      width: min(
-        calc(100vw - var(--safe-left) - var(--safe-right) - 12px),
-        1700px
-      );
+      width: calc(100vw - var(--safe-left) - var(--safe-right) - 4px);
+      max-width: 2000px;
       aspect-ratio: 16 / 9;
       background: url("sora1.PNG") center center / cover no-repeat;
       overflow: hidden;
@@ -117,10 +115,10 @@
 
     @media (max-width: 900px) {
       .page {
-        min-height: calc(100svh + 110px);
-        min-height: calc(100dvh + 110px);
-        padding-top: calc(var(--safe-top) + 20px);
-        padding-bottom: calc(var(--safe-bottom) + 20px);
+        min-height: calc(100svh + 32px);
+        min-height: calc(100dvh + 32px);
+        padding-top: calc(var(--safe-top) + 6px);
+        padding-bottom: calc(var(--safe-bottom) + 6px);
       }
 
       .title {
@@ -131,16 +129,16 @@
 
     @media (max-width: 600px) {
       .page {
-        min-height: calc(100svh + 100px);
-        min-height: calc(100dvh + 100px);
-        padding-top: calc(var(--safe-top) + 16px);
-        padding-right: max(4px, var(--safe-right));
-        padding-bottom: calc(var(--safe-bottom) + 16px);
-        padding-left: max(4px, var(--safe-left));
+        min-height: calc(100svh + 28px);
+        min-height: calc(100dvh + 28px);
+        padding-top: calc(var(--safe-top) + 4px);
+        padding-right: max(1px, var(--safe-right));
+        padding-bottom: calc(var(--safe-bottom) + 4px);
+        padding-left: max(1px, var(--safe-left));
       }
 
       .safe-stage {
-        width: calc(100vw - var(--safe-left) - var(--safe-right) - 8px);
+        width: calc(100vw - var(--safe-left) - var(--safe-right) - 2px);
       }
 
       .title {
