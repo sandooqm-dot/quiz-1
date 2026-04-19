@@ -204,7 +204,12 @@
       text-align: center;
       padding: 8px 10px;
       cursor: pointer;
-      transition: transform 0.15s ease, background 0.15s ease, box-shadow 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+      transition:
+        transform 0.15s ease,
+        background 0.15s ease,
+        box-shadow 0.15s ease,
+        color 0.15s ease,
+        border-color 0.15s ease;
     }
 
     .choices-row.compact-row .choice-btn {
@@ -306,7 +311,7 @@
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      gap: 6px;
+      gap: 8px;
       opacity: 0;
       transform: translateY(12px) scale(0.98);
     }
@@ -744,37 +749,38 @@
           type: 'tf',
           question: 'من مفسدات الصيام<br>القيء عمدًا - النوم - الأكل ناسيًا',
           plainQuestion: 'من مفسدات الصيام القيء عمدًا - النوم - الأكل ناسيًا',
-          choices: ['صح', 'خطأ']
+          choices: ['نعم', 'لا'],
+          correctChoice: 1
         },
         {
           type: 'tf',
           question: 'من الآداب المستحبة في الصيام تأخير السحور',
-          choices: ['صح', 'خطأ'],
+          choices: ['نعم', 'لا'],
           correctChoice: 0
         },
         {
           type: 'tf',
           question: 'الآداب الواجبة في الصيام<br>الحرص على أداء الصلاة في وقتها',
           plainQuestion: 'الآداب الواجبة في الصيام الحرص على أداء الصلاة في وقتها',
-          choices: ['صح', 'خطأ'],
+          choices: ['نعم', 'لا'],
           correctChoice: 0
         },
         {
           type: 'tf',
           question: 'العشر الأواخر هي العشر الأيام الأخيرة من رمضان',
-          choices: ['صح', 'خطأ'],
+          choices: ['نعم', 'لا'],
           correctChoice: 0
         },
         {
           type: 'tf',
           question: 'زكاة الفطر هي ما يدفعه المسلم<br>من طعام للمساكين بعد تمام شهر رمضان',
           plainQuestion: 'زكاة الفطر هي ما يدفعه المسلم من طعام للمساكين بعد تمام شهر رمضان',
-          choices: ['صح', 'خطأ'],
+          choices: ['نعم', 'لا'],
           correctChoice: 0
         },
         {
           type: 'direct',
-          question: 'الذين يباح لهم الفطر في رمضان',
+          question: 'الذين يباح لهم الفطر في رمضان …… و…….',
           answerLines: ['المريض', 'المسافر']
         },
         {
@@ -790,7 +796,10 @@
         {
           type: 'direct',
           question: 'اذكري اثنين من الأموال التي تجب فيها الزكاة.',
-          answerLines: ['بهيمة الأنعام', 'الذهب والفضة', 'الأوراق النقدية']
+          answerLines: [
+            '١- بهيمة الأنعام   ٢- الذهب والفضة والأوراق النقدية',
+            '٣- عروض التجارة   ٤- الخارج من الأرض'
+          ]
         },
         {
           type: 'direct',
