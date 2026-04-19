@@ -147,6 +147,12 @@
       white-space: normal;
     }
 
+    .question-text.long-question {
+      width: 88%;
+      font-size: clamp(24px, 3.5vw, 62px);
+      line-height: 1.35;
+    }
+
     .choices-row {
       position: absolute;
       left: 50%;
@@ -158,6 +164,12 @@
       align-items: center;
       gap: clamp(12px, 2vw, 34px);
       direction: rtl;
+    }
+
+    .choices-row.compact-row {
+      width: 82%;
+      top: 53.8%;
+      gap: clamp(10px, 1.6vw, 24px);
     }
 
     .choice-btn {
@@ -177,6 +189,12 @@
       padding: 10px 12px;
       cursor: pointer;
       transition: transform 0.15s ease, background 0.15s ease, box-shadow 0.15s ease;
+    }
+
+    .choices-row.compact-row .choice-btn {
+      min-height: clamp(58px, 7vw, 108px);
+      font-size: clamp(22px, 2.6vw, 46px);
+      border-radius: clamp(16px, 1.8vw, 30px);
     }
 
     .choice-btn:hover,
@@ -265,13 +283,27 @@
         font-size: clamp(24px, 4.8vw, 58px);
       }
 
+      .question-text.long-question {
+        width: 88%;
+        font-size: clamp(21px, 4vw, 46px);
+      }
+
       .choices-row {
         width: 87%;
         top: 52.6%;
       }
 
+      .choices-row.compact-row {
+        width: 84%;
+        top: 53.4%;
+      }
+
       .choice-btn {
         font-size: clamp(21px, 3vw, 42px);
+      }
+
+      .choices-row.compact-row .choice-btn {
+        font-size: clamp(19px, 2.6vw, 34px);
       }
     }
 
@@ -313,16 +345,36 @@
         line-height: 1.5;
       }
 
+      .question-text.long-question {
+        width: 89%;
+        top: 27.6%;
+        font-size: clamp(18px, 4.7vw, 28px);
+        line-height: 1.45;
+      }
+
       .choices-row {
         width: 86%;
         top: 52.2%;
         gap: 10px;
       }
 
+      .choices-row.compact-row {
+        width: 84%;
+        top: 53.4%;
+        gap: 8px;
+      }
+
       .choice-btn {
         min-height: clamp(52px, 10vw, 82px);
         font-size: clamp(18px, 4.3vw, 28px);
         border-radius: 18px;
+      }
+
+      .choices-row.compact-row .choice-btn {
+        min-height: clamp(48px, 9vw, 72px);
+        font-size: clamp(16px, 3.8vw, 24px);
+        border-radius: 16px;
+        padding: 8px 8px;
       }
 
       .nav-row {
@@ -352,8 +404,16 @@
         font-size: clamp(18px, 5.6vw, 28px);
       }
 
+      .question-text.long-question {
+        font-size: clamp(16px, 4.9vw, 24px);
+      }
+
       .choice-btn {
         font-size: clamp(16px, 4.6vw, 24px);
+      }
+
+      .choices-row.compact-row .choice-btn {
+        font-size: clamp(14px, 4vw, 20px);
       }
 
       .nav-btn {
@@ -448,9 +508,16 @@
         renderQuestion();
       }
 
+      function applyQuestionSizing(questionTextValue) {
+        const isLongQuestion = questionTextValue.length >= 34;
+        questionText.classList.toggle('long-question', isLongQuestion);
+        choicesRow.classList.toggle('compact-row', isLongQuestion);
+      }
+
       function renderQuestion() {
         const current = questions[currentQuestionIndex];
         questionText.textContent = current.question;
+        applyQuestionSizing(current.question);
         choicesRow.innerHTML = '';
 
         current.choices.forEach((choice, choiceIndex) => {
