@@ -174,6 +174,13 @@
       gap: clamp(4px, 0.7vw, 12px);
     }
 
+    .choices-row.two-choice-row,
+    .choices-row.compact-row.two-choice-row {
+      width: 46%;
+      max-width: 700px;
+      gap: clamp(10px, 1.2vw, 18px);
+    }
+
     .choice-btn {
       flex: 0 0 24.5%;
       min-width: 0;
@@ -200,6 +207,11 @@
       font-size: clamp(20px, 2.15vw, 38px);
       border-radius: clamp(14px, 1.4vw, 24px);
       padding: 8px 8px;
+    }
+
+    .choices-row.two-choice-row .choice-btn,
+    .choices-row.compact-row.two-choice-row .choice-btn {
+      flex-basis: 42%;
     }
 
     .choice-btn:hover,
@@ -307,6 +319,13 @@
         gap: 5px;
       }
 
+      .choices-row.two-choice-row,
+      .choices-row.compact-row.two-choice-row {
+        width: 52%;
+        max-width: 640px;
+        gap: 10px;
+      }
+
       .choice-btn {
         flex-basis: 24%;
         font-size: clamp(19px, 2.5vw, 34px);
@@ -315,6 +334,11 @@
       .choices-row.compact-row .choice-btn {
         flex-basis: 24%;
         font-size: clamp(17px, 2.2vw, 28px);
+      }
+
+      .choices-row.two-choice-row .choice-btn,
+      .choices-row.compact-row.two-choice-row .choice-btn {
+        flex-basis: 42%;
       }
     }
 
@@ -377,6 +401,13 @@
         gap: 4px;
       }
 
+      .choices-row.two-choice-row,
+      .choices-row.compact-row.two-choice-row {
+        width: 58%;
+        max-width: none;
+        gap: 8px;
+      }
+
       .choice-btn {
         flex-basis: 28.5%;
         min-height: clamp(46px, 8.2vw, 68px);
@@ -391,6 +422,11 @@
         font-size: clamp(14px, 3.3vw, 20px);
         border-radius: 14px;
         padding: 7px 6px;
+      }
+
+      .choices-row.two-choice-row .choice-btn,
+      .choices-row.compact-row.two-choice-row .choice-btn {
+        flex-basis: 42%;
       }
 
       .nav-row {
@@ -451,7 +487,6 @@
 
       <section id="quizScreen" class="screen hidden">
         <h2 id="questionText" class="question-text"></h2>
-
         <div id="choicesRow" class="choices-row"></div>
 
         <div class="nav-row">
@@ -488,16 +523,44 @@
 
       const questions = [
         {
+          type: 'mcq',
           question: 'الصيام هو الركن ...... من أركان الإسلام',
           choices: ['الثاني', 'الثالث', 'الرابع']
         },
         {
+          type: 'mcq',
           question: 'ليلة القدر تكون في العشر ..... من رمضان',
           choices: ['الأوائل', 'الأواسط', 'الأواخر']
         },
         {
+          type: 'mcq',
           question: 'الزكاة هي الركن .....',
           choices: ['الأول', 'الثاني', 'الثالث']
+        },
+        {
+          type: 'tf',
+          question: 'من مفسدات الصيام (القيء عمدًا - النوم - الأكل ناسيًا)',
+          choices: ['صح', 'خطأ']
+        },
+        {
+          type: 'tf',
+          question: 'من الآداب المستحبة في الصيام تأخير السحور',
+          choices: ['صح', 'خطأ']
+        },
+        {
+          type: 'tf',
+          question: 'من الآداب الواجبة في الصيام الحرص على أداء الصلاة في وقتها',
+          choices: ['صح', 'خطأ']
+        },
+        {
+          type: 'tf',
+          question: 'العشر الأواخر هي العشر الأيام الأخيرة من رمضان',
+          choices: ['صح', 'خطأ']
+        },
+        {
+          type: 'tf',
+          question: 'زكاة الفطر هي ما يدفعه المسلم من طعام للمساكين بعد تمام شهر رمضان',
+          choices: ['صح', 'خطأ']
         }
       ];
 
@@ -524,19 +587,21 @@
         renderQuestion();
       }
 
-      function applyQuestionSizing(questionTextValue) {
+      function applyQuestionSizing(current) {
+        const questionTextValue = current.question;
         const cleaned = questionTextValue.replace(/\s+/g, '');
         const wordCount = questionTextValue.trim().split(/\s+/).length;
         const isLongQuestion = cleaned.length >= 28 || wordCount >= 6;
 
         questionText.classList.toggle('long-question', isLongQuestion);
         choicesRow.classList.toggle('compact-row', isLongQuestion);
+        choicesRow.classList.toggle('two-choice-row', current.type === 'tf');
       }
 
       function renderQuestion() {
         const current = questions[currentQuestionIndex];
         questionText.textContent = current.question;
-        applyQuestionSizing(current.question);
+        applyQuestionSizing(current);
         choicesRow.innerHTML = '';
 
         current.choices.forEach((choice, choiceIndex) => {
