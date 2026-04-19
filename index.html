@@ -153,6 +153,11 @@
       line-height: 1.34;
     }
 
+    .question-text.manual-break {
+      width: 84%;
+      line-height: 1.26;
+    }
+
     .choices-row {
       position: absolute;
       left: 50%;
@@ -305,6 +310,10 @@
         font-size: clamp(19px, 3.4vw, 40px);
       }
 
+      .question-text.manual-break {
+        width: 82%;
+      }
+
       .choices-row {
         width: 62%;
         max-width: 780px;
@@ -385,6 +394,11 @@
         top: 29.8%;
         font-size: clamp(16px, 4vw, 24px);
         line-height: 1.42;
+      }
+
+      .question-text.manual-break {
+        width: 84%;
+        top: 30%;
       }
 
       .choices-row {
@@ -549,7 +563,8 @@
         },
         {
           type: 'tf',
-          question: 'من الآداب الواجبة في الصيام الحرص على أداء الصلاة في وقتها',
+          question: 'من الآداب الواجبة في الصيام الحرص على أداء الصلاة في<br>وقتها',
+          plainQuestion: 'من الآداب الواجبة في الصيام الحرص على أداء الصلاة في وقتها',
           choices: ['صح', 'خطأ']
         },
         {
@@ -559,7 +574,8 @@
         },
         {
           type: 'tf',
-          question: 'زكاة الفطر هي ما يدفعه المسلم من طعام للمساكين بعد تمام شهر رمضان',
+          question: 'زكاة الفطر هي ما يدفعه المسلم من طعام للمساكين بعد تمام<br>شهر رمضان',
+          plainQuestion: 'زكاة الفطر هي ما يدفعه المسلم من طعام للمساكين بعد تمام شهر رمضان',
           choices: ['صح', 'خطأ']
         }
       ];
@@ -588,19 +604,21 @@
       }
 
       function applyQuestionSizing(current) {
-        const questionTextValue = current.question;
-        const cleaned = questionTextValue.replace(/\s+/g, '');
-        const wordCount = questionTextValue.trim().split(/\s+/).length;
+        const rawText = current.plainQuestion || current.question.replace(/<br\s*\/?>/gi, ' ');
+        const cleaned = rawText.replace(/\s+/g, '');
+        const wordCount = rawText.trim().split(/\s+/).length;
         const isLongQuestion = cleaned.length >= 28 || wordCount >= 6;
+        const hasManualBreak = /<br\s*\/?>/i.test(current.question);
 
         questionText.classList.toggle('long-question', isLongQuestion);
+        questionText.classList.toggle('manual-break', hasManualBreak);
         choicesRow.classList.toggle('compact-row', isLongQuestion);
         choicesRow.classList.toggle('two-choice-row', current.type === 'tf');
       }
 
       function renderQuestion() {
         const current = questions[currentQuestionIndex];
-        questionText.textContent = current.question;
+        questionText.innerHTML = current.question;
         applyQuestionSizing(current);
         choicesRow.innerHTML = '';
 
