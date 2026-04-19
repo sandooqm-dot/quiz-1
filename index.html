@@ -13,6 +13,7 @@
       --safe-left: env(safe-area-inset-left, 0px);
       --page-bg: #BC9A71;
       --brown: #7B5C39;
+      --green: #2f8f3b;
       --app-height: 100vh;
       --stage-ratio: 2.02524;
     }
@@ -203,7 +204,7 @@
       text-align: center;
       padding: 8px 10px;
       cursor: pointer;
-      transition: transform 0.15s ease, background 0.15s ease, box-shadow 0.15s ease;
+      transition: transform 0.15s ease, background 0.15s ease, box-shadow 0.15s ease, color 0.15s ease, border-color 0.15s ease;
     }
 
     .choices-row.compact-row .choice-btn {
@@ -233,6 +234,20 @@
 
     .choice-btn.selected {
       background: rgba(123, 92, 57, 0.16);
+    }
+
+    .choice-btn.correct-answer {
+      background: var(--green);
+      border-color: var(--green);
+      color: #fff;
+      box-shadow: 0 8px 20px rgba(47, 143, 59, 0.22);
+    }
+
+    .choice-btn.correct-answer:hover,
+    .choice-btn.correct-answer:focus-visible {
+      background: #2b8436;
+      border-color: #2b8436;
+      color: #fff;
     }
 
     .answer-box {
@@ -710,17 +725,20 @@
         {
           type: 'mcq',
           question: 'الصيام هو الركن ...... من أركان الإسلام',
-          choices: ['الثاني', 'الثالث', 'الرابع']
+          choices: ['الثاني', 'الثالث', 'الرابع'],
+          correctChoice: 2
         },
         {
           type: 'mcq',
           question: 'ليلة القدر تكون في العشر ..... من رمضان',
-          choices: ['الأوائل', 'الأواسط', 'الأواخر']
+          choices: ['الأوائل', 'الأواسط', 'الأواخر'],
+          correctChoice: 2
         },
         {
           type: 'mcq',
           question: 'الزكاة هي الركن .....',
-          choices: ['الأول', 'الثاني', 'الثالث']
+          choices: ['الأول', 'الثاني', 'الثالث'],
+          correctChoice: 2
         },
         {
           type: 'tf',
@@ -731,24 +749,28 @@
         {
           type: 'tf',
           question: 'من الآداب المستحبة في الصيام تأخير السحور',
-          choices: ['صح', 'خطأ']
+          choices: ['صح', 'خطأ'],
+          correctChoice: 0
         },
         {
           type: 'tf',
           question: 'الآداب الواجبة في الصيام<br>الحرص على أداء الصلاة في وقتها',
           plainQuestion: 'الآداب الواجبة في الصيام الحرص على أداء الصلاة في وقتها',
-          choices: ['صح', 'خطأ']
+          choices: ['صح', 'خطأ'],
+          correctChoice: 0
         },
         {
           type: 'tf',
           question: 'العشر الأواخر هي العشر الأيام الأخيرة من رمضان',
-          choices: ['صح', 'خطأ']
+          choices: ['صح', 'خطأ'],
+          correctChoice: 0
         },
         {
           type: 'tf',
           question: 'زكاة الفطر هي ما يدفعه المسلم<br>من طعام للمساكين بعد تمام شهر رمضان',
           plainQuestion: 'زكاة الفطر هي ما يدفعه المسلم من طعام للمساكين بعد تمام شهر رمضان',
-          choices: ['صح', 'خطأ']
+          choices: ['صح', 'خطأ'],
+          correctChoice: 0
         },
         {
           type: 'direct',
@@ -888,8 +910,15 @@
           btn.className = 'choice-btn';
           btn.textContent = choice;
 
-          if (selectedChoices[currentQuestionIndex] === choiceIndex) {
-            btn.classList.add('selected');
+          const selectedIndex = selectedChoices[currentQuestionIndex];
+          const hasCorrectChoice = typeof current.correctChoice === 'number';
+
+          if (selectedIndex === choiceIndex) {
+            if (hasCorrectChoice && choiceIndex === current.correctChoice) {
+              btn.classList.add('correct-answer');
+            } else {
+              btn.classList.add('selected');
+            }
           }
 
           btn.addEventListener('click', () => {
